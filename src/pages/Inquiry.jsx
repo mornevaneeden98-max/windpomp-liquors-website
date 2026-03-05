@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Trash2 } from 'lucide-react';
 import useCartStore from '../store/cartStore';
+import useContent from '../hooks/useContent';
 
 const Inquiry = () => {
     const { content, loading } = useContent();
@@ -16,8 +17,76 @@ const Inquiry = () => {
         }
     };
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch("https://formsubmit.co/ajax/morne@windpompliquors.co.za", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                setSubmitSuccess(true);
+                form.reset();
+                cart.forEach(item => removeFromCart(item.id, item.size));
+            } else {
+                alert("Something went wrong. Please try again or use the WhatsApp button.");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Network error. Please try again or use the WhatsApp button.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     if (loading) return null;
     const data = content?.pages?.inquiry || {};
+
+    // Create a text summary of the cart for the email
+    const cartSummaryText = cart.length > 0
+        ? cart.map(item => `${item.quantity} Box(es) of ${item.name} (${item.size})`).join(' | ')
+        : 'None';
+
+    if (submitSuccess) {
+        return (
+            <div style={{ paddingTop: '100px', paddingBottom: '4rem' }}>
+                <div className="container" style={{ maxWidth: '800px', textAlign: 'center' }}>
+                    <motion.div
+                        className="glass-panel"
+                        style={{ padding: '6rem 4rem', marginTop: '2rem' }}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(37, 211, 102, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem auto' }}>
+                            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#25D366" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <h2 className="heading-lg" style={{ marginBottom: '1rem' }}>Inquiry Sent Successfully!</h2>
+                        <p className="text-muted" style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
+                            Thank you for reaching out. Our sales team will review your requirements and get back to you shortly.
+                        </p>
+                        <button onClick={() => setSubmitSuccess(false)} className="btn btn-primary">
+                            Send Another Inquiry
+                        </button>
+                    </motion.div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div style={{ paddingTop: '100px', paddingBottom: '4rem' }}>
@@ -70,35 +139,40 @@ const Inquiry = () => {
                         </p>
                     </div>
 
-                    <form onSubmit={(e) => e.preventDefault()}>
+                    <form onSubmit={handleSubmit}>
+                        {/* FormSubmit Configuration */}
+                        <input type="hidden" name="_subject" value="New Wholesale Inquiry! (Windpomp Liquors)" />
+                        <input type="text" name="_honey" style={{ display: 'none' }} />
+                        <input type="hidden" name="Cart Items" value={cartSummaryText} />
+
                         <div className="grid-cols-2" style={{ gap: '1.5rem' }}>
                             <div className="form-group">
                                 <label className="form-label">Full Name</label>
-                                <input type="text" className="form-input" placeholder="John Doe" />
+                                <input type="text" name="name" className="form-input" placeholder="John Doe" required />
                             </div>
                             <div className="form-group">
                                 <label className="form-label">Company / Venue Name</label>
-                                <input type="text" className="form-input" placeholder="Your Business" />
+                                <input type="text" name="company" className="form-input" placeholder="Your Business" required />
                             </div>
                         </div>
 
                         <div className="grid-cols-2" style={{ gap: '1.5rem' }}>
                             <div className="form-group">
                                 <label className="form-label">Email Address</label>
-                                <input type="email" className="form-input" placeholder="john@company.com" />
+                                <input type="email" name="email" className="form-input" placeholder="john@company.com" required />
                             </div>
                             <div className="form-group">
                                 <label className="form-label">Phone / WhatsApp</label>
-                                <input type="tel" className="form-input" placeholder="+27 ..." />
+                                <input type="tel" name="phone" className="form-input" placeholder="+27 ..." required />
                             </div>
                         </div>
 
                         <div className="form-group">
                             <label className="form-label">Type of Inquiry</label>
-                            <select className="form-input" style={{ appearance: 'none' }}>
-                                <option value="national-boxes">National Delivery (Boxes)</option>
-                                <option value="national-pallets">National Delivery (Pallets)</option>
-                                <option value="other">Other Inquiry</option>
+                            <select name="type" className="form-input" style={{ appearance: 'none' }}>
+                                <option value="National Delivery (Boxes)">National Delivery (Boxes)</option>
+                                <option value="National Delivery (Pallets)">National Delivery (Pallets)</option>
+                                <option value="Other Inquiry">Other Inquiry</option>
                             </select>
                         </div>
 
@@ -145,14 +219,15 @@ const Inquiry = () => {
                         <div className="form-group">
                             <label className="form-label">Additional Product Requirements / Message</label>
                             <textarea
+                                name="message"
                                 className="form-input"
                                 rows="4"
                                 placeholder={cart.length > 0 ? "Any additional details regarding the items in your cart? Or need something else?" : "E.g., 5 pallets of Kaia Gin, 10 boxes of Kaia Whizza..."}
                             ></textarea>
                         </div>
 
-                        <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '1.2rem', fontSize: '1rem', marginTop: '1rem' }}>
-                            Submit Wholesale Inquiry
+                        <button type="submit" disabled={isSubmitting} className="btn btn-primary" style={{ width: '100%', padding: '1.2rem', fontSize: '1rem', marginTop: '1rem', opacity: isSubmitting ? 0.7 : 1 }}>
+                            {isSubmitting ? 'Sending Inquiry...' : 'Submit Wholesale Inquiry'}
                         </button>
                         <p className="text-muted" style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.8rem' }}>
                             Our sales team generally responds within 24 business hours.

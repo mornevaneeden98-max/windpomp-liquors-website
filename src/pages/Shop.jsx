@@ -36,11 +36,7 @@ const Shop = () => {
         const size = selectedSizes[product.id] || product.sizes[0];
         const qty = quantities[product.id] || 1;
 
-        addToCart({
-            ...product,
-            selectedSize: size,
-            qtyToAdd: qty
-        });
+        addToCart(product, size, qty);
 
         setToastMessage(`Added ${qty} ${qty === 1 ? 'Box' : 'Boxes'} of ${product.name} (${size}) to inquiry!`);
         setTimeout(() => setToastMessage(null), 3000);
