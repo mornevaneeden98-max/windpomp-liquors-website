@@ -36,7 +36,7 @@ npm run lint     # Run ESLint
 
 ## Configuration
 
-- Dev server runs on `0.0.0.0:5000` with `allowedHosts: 'all'` for Replit proxy compatibility
+- Dev server runs on `0.0.0.0:5000` with `allowedHosts: true` for Replit proxy compatibility (Vite 7 requires boolean `true`, not string `'all'`)
 - Firebase config is in `src/firebase.js`
 - Firebase rules: `firestore.rules`, `storage.rules`, `database.rules.json`
 
