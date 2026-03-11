@@ -43,16 +43,17 @@ const Shop = () => {
     };
 
     return (
-        <div style={{ paddingTop: '100px', paddingBottom: '6rem' }}>
+        <div className="page-root">
             <div className="container-fluid">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                     data-editable="pages.home.heroImage"
+                    className="hero-content"
                     style={{
                         textAlign: 'center',
-                        padding: '4rem 2rem',
+                        maxWidth: '100%',
                         marginBottom: '4rem',
                         borderRadius: '12px',
                         backgroundImage: `linear-gradient(rgba(10,10,10,0.8), rgba(10,10,10,0.8)), url("${images.heroImage}")`,
@@ -83,19 +84,7 @@ const Shop = () => {
                                 transition={{ delay: index * 0.1 }}
                             >
                                 <div
-                                    style={{
-                                        height: '350px',
-                                        width: '100%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        marginBottom: '1.5rem',
-                                        background: 'rgba(255,255,255,0.02)',
-                                        borderRadius: '8px',
-                                        border: '1px solid rgba(255,255,255,0.05)',
-                                        overflow: 'hidden',
-                                        cursor: 'pointer'
-                                    }}
+                                    className="product-image-container"
                                     data-editable={`products.${index}.image`}
                                 >
                                     <img
@@ -124,36 +113,33 @@ const Shop = () => {
                                         {item.name}
                                     </h3>
                                     <p
-                                        className="text-muted"
-                                        style={{ fontSize: '0.9rem', marginBottom: '1.5rem' }}
+                                        className="product-description text-muted"
                                         data-editable={`products.${index}.description`}
                                     >
                                         {item.description}
                                     </p>
 
                                     <div style={{ marginBottom: '1.5rem' }}>
-                                        {item.sizes.length > 1 && (
-                                            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                                                {item.sizes.map(size => (
-                                                    <button
-                                                        key={size}
-                                                        onClick={() => handleSizeSelect(item.id, size)}
-                                                        style={{
-                                                            padding: '0.4rem 0.8rem',
-                                                            background: currentSize === size ? 'var(--primary)' : 'transparent',
-                                                            border: '1px solid var(--primary)',
-                                                            color: currentSize === size ? '#000' : 'var(--primary)',
-                                                            borderRadius: '4px',
-                                                            fontSize: '0.8rem',
-                                                            cursor: 'pointer',
-                                                            transition: 'all 0.3s'
-                                                        }}
-                                                    >
-                                                        {size}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        )}
+                                        <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                                            {item.sizes.map(size => (
+                                                <button
+                                                    key={size}
+                                                    onClick={() => handleSizeSelect(item.id, size)}
+                                                    style={{
+                                                        padding: '0.4rem 0.8rem',
+                                                        background: currentSize === size ? 'var(--primary)' : 'transparent',
+                                                        border: '1px solid var(--primary)',
+                                                        color: currentSize === size ? '#000' : 'var(--primary)',
+                                                        borderRadius: '4px',
+                                                        fontSize: '0.8rem',
+                                                        cursor: 'pointer',
+                                                        transition: 'all 0.3s'
+                                                    }}
+                                                >
+                                                    {size}
+                                                </button>
+                                            ))}
+                                        </div>
 
                                         <div style={{
                                             background: 'rgba(212, 175, 55, 0.1)',

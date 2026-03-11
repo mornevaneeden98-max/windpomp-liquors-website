@@ -28,7 +28,7 @@ const Inquiry = () => {
         const formData = new FormData(form);
 
         try {
-            const response = await fetch("https://formsubmit.co/ajax/morne@windpompliquors.co.za", {
+            const response = await fetch("https://formsubmit.co/ajax/sales@example.com", {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json'
@@ -61,11 +61,11 @@ const Inquiry = () => {
 
     if (submitSuccess) {
         return (
-            <div style={{ paddingTop: '100px', paddingBottom: '4rem' }}>
-                <div className="container" style={{ maxWidth: '800px', textAlign: 'center' }}>
+            <div className="page-root">
+                <div className="container" style={{ textAlign: 'center' }}>
                     <motion.div
                         className="glass-panel"
-                        style={{ padding: '6rem 4rem', marginTop: '2rem' }}
+                        style={{ padding: '3rem 1.5rem', marginTop: '2rem' }}
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
@@ -89,24 +89,24 @@ const Inquiry = () => {
     }
 
     return (
-        <div style={{ paddingTop: '100px', paddingBottom: '4rem' }}>
-            <div className="container" style={{ maxWidth: '800px' }}>
+        <div className="page-root">
+            <div className="container">
                 <motion.div
                     className="glass-panel"
-                    style={{ padding: '4rem', marginTop: '2rem' }}
+                    style={{ padding: '2rem 1.5rem', marginTop: '2rem' }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
                     <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                         <span className="hero-subtitle" data-editable="pages.inquiry.subtitle">{data.subtitle || "Logistics & Supply"}</span>
-                        <h1 className="heading-xl" style={{ fontSize: '3rem' }} data-editable="pages.inquiry.title">{data.title || "Wholesale Liquor Sales"}</h1>
+                        <h1 className="heading-xl" data-editable="pages.inquiry.title">{data.title || "Wholesale Liquor Sales"}</h1>
                         <p className="text-muted" style={{ marginBottom: '0.5rem' }} data-editable="pages.inquiry.desc">
                             {data.desc || "Whether you need 10 boxes for an event or a full shipping container for nationwide distribution, Windpomp Liquors is fully equipped to handle your wholesale liquor needs."}
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                            <a href={`mailto:${content?.global?.email || 'sales@windpompliquors.co.za'}`} style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 500 }} data-editable="global.email">
-                                {content?.global?.email || "sales@windpompliquors.co.za"}
+                            <a href={`mailto:${content?.global?.email || 'sales@example.com'}`} style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 500 }} data-editable="global.email">
+                                {content?.global?.email || "sales@example.com"}
                             </a>
                             <a
                                 href={`https://wa.me/${(content?.global?.phone || "079 490 1492").replace(/\s/g, "")}`}
@@ -145,7 +145,7 @@ const Inquiry = () => {
                         <input type="text" name="_honey" style={{ display: 'none' }} />
                         <input type="hidden" name="Cart Items" value={cartSummaryText} />
 
-                        <div className="grid-cols-2" style={{ gap: '1.5rem' }}>
+                        <div className="grid-cols-2 grid-gap-lg">
                             <div className="form-group">
                                 <label className="form-label">Full Name</label>
                                 <input type="text" name="name" className="form-input" placeholder="John Doe" required />
@@ -156,7 +156,7 @@ const Inquiry = () => {
                             </div>
                         </div>
 
-                        <div className="grid-cols-2" style={{ gap: '1.5rem' }}>
+                        <div className="grid-cols-2 grid-gap-lg">
                             <div className="form-group">
                                 <label className="form-label">Email Address</label>
                                 <input type="email" name="email" className="form-input" placeholder="john@company.com" required />

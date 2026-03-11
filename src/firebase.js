@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCZWzlMltmvM-pYLdCk1ir0KSAKwkKqZfU",
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: "windpomp-liquors-web.firebaseapp.com",
     projectId: "windpomp-liquors-web",
     storageBucket: "windpomp-liquors-web.firebasestorage.app",

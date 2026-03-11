@@ -73,7 +73,7 @@ const defaultContent = {
     global: {
         footerDesc: "A legacy forged from Windpomp Padstal. Distributing premium Kaia Distillery spirits for national acclaim.",
         address: "N1, Musina, Limpopo, 0900",
-        email: "sales@windpompliquors.co.za",
+        email: "sales@example.com",
         phone: "079 490 1492",
         welcome: "Wholesale & Distribution",
         company: "Windpomp Liquors",
@@ -104,13 +104,26 @@ const useContent = () => {
         const unsubscribe = onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
                 const fetchedData = docSnap.data();
+
+                // Deep merge pages to preserve default values for missing keys
+                const mergedPages = JSON.parse(JSON.stringify(defaultContent.pages));
+                if (fetchedData.pages) {
+                    Object.keys(fetchedData.pages).forEach(pageKey => {
+                        if (mergedPages[pageKey]) {
+                            mergedPages[pageKey] = {
+                                ...mergedPages[pageKey],
+                                ...fetchedData.pages[pageKey]
+                            };
+                        } else {
+                            mergedPages[pageKey] = fetchedData.pages[pageKey];
+                        }
+                    });
+                }
+
                 setContent({
                     ...defaultContent,
                     ...fetchedData,
-                    pages: {
-                        ...defaultContent.pages,
-                        ...(fetchedData.pages || {})
-                    }
+                    pages: mergedPages
                 });
             } else {
                 console.warn("Content document does not exist. Using defaults.");

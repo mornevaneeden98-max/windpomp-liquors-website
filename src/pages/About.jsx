@@ -18,10 +18,10 @@ const About = () => {
     const data = content.pages.about;
 
     return (
-        <div style={{ paddingTop: '100px' }}>
+        <div className="page-root">
             <section className="section">
                 <div className="container">
-                    <div className="grid-cols-2" style={{ gap: '4rem' }}>
+                    <div className="grid-cols-2 grid-gap-lg">
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -42,7 +42,7 @@ const About = () => {
                             <p className="text-muted" data-editable="pages.about.desc3" style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>
                                 {data.desc3}
                             </p>
-                            <div className="glass-panel" style={{ padding: '2rem', borderLeft: '4px solid var(--primary)' }}>
+                            <div className="glass-panel" style={{ padding: '1.5rem', borderLeft: '4px solid var(--primary)' }}>
                                 <h3 style={{ margin: 0 }} data-editable="pages.about.partnerTitle">{data.partnerTitle || "Authorized Sales Partner"}</h3>
                                 <p className="text-muted" style={{ margin: '0.5rem 0 0' }} data-editable="pages.about.partnerDesc">
                                     {data.partnerDesc || "When you buy through Windpomp Liquors, you are fully guaranteed authentic, export-quality Kaia Distillery spirits."}
@@ -60,7 +60,7 @@ const About = () => {
                             <img
                                 src={data.image}
                                 alt="Story Image"
-                                style={{ height: '100%', width: '100%', objectFit: 'cover', minHeight: '500px' }}
+                                style={{ height: '100%', width: '100%', objectFit: 'cover', minHeight: '300px', maxHeight: '600px' }}
                             />
                         </motion.div>
                     </div>

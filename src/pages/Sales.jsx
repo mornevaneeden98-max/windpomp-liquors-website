@@ -19,22 +19,22 @@ const Sales = () => {
     const data = content.pages.sales;
 
     return (
-        <div style={{ paddingTop: '100px', paddingBottom: '4rem' }}>
+        <div className="page-root">
             <div className="container">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    style={{ textAlign: 'center', marginBottom: '4rem', maxWidth: '800px', margin: '0 auto' }}
+                    style={{ textAlign: 'center', marginBottom: '3rem' }}
                 >
                     <span className="hero-subtitle" data-editable="pages.sales.heroSubtitle">{data.heroSubtitle}</span>
-                    <h1 className="heading-lg" data-editable="pages.sales.heroTitle" style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>{data.heroTitle}</h1>
-                    <p className="text-muted" data-editable="pages.sales.heroDesc" style={{ fontSize: '1.2rem' }}>
+                    <h1 className="heading-lg" data-editable="pages.sales.heroTitle" style={{ marginBottom: '1.5rem' }}>{data.heroTitle}</h1>
+                    <p className="text-muted" data-editable="pages.sales.heroDesc" style={{ fontSize: '1.1rem' }}>
                         {data.heroDesc}
                     </p>
                 </motion.div>
 
-                <div className="grid-cols-2" style={{ gap: '4rem', alignItems: 'center', marginBottom: '6rem' }}>
+                <div className="grid-cols-2 grid-gap-lg" style={{ alignItems: 'center', marginBottom: '4rem' }}>
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -58,7 +58,7 @@ const Sales = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        style={{ height: '100%', minHeight: '400px', borderRadius: '12px', overflow: 'hidden', cursor: 'pointer' }}
+                        style={{ height: '100%', minHeight: '300px', maxHeight: '500px', borderRadius: '12px', overflow: 'hidden', cursor: 'pointer' }}
                         data-editable="pages.sales.image"
                     >
                         <img
@@ -78,7 +78,7 @@ const Sales = () => {
                         viewport={{ once: true }}
                     >
                         <Truck size={48} className="feature-icon" />
-                        <h3 style={{ fontSize: '1.3rem' }} data-editable="pages.sales.feature1Title">{data.feature1Title || "Reliable Delivery"}</h3>
+                        <h3 data-editable="pages.sales.feature1Title">{data.feature1Title || "Reliable Delivery"}</h3>
                         <p className="text-muted" data-editable="pages.sales.feature1Desc">
                             {data.feature1Desc || "To every corner of South Africa. From major metropolitan hubs like Johannesburg and Cape Town to the most secluded rural venues."}
                         </p>
@@ -93,7 +93,7 @@ const Sales = () => {
                         transition={{ delay: 0.2 }}
                     >
                         <MapPin size={48} className="feature-icon" />
-                        <h3 style={{ fontSize: '1.3rem' }} data-editable="pages.sales.feature2Title">{data.feature2Title || "Full Coverage"}</h3>
+                        <h3 data-editable="pages.sales.feature2Title">{data.feature2Title || "Full Coverage"}</h3>
                         <p className="text-muted" data-editable="pages.sales.feature2Desc">
                             {data.feature2Desc || "Fully servicing Limpopo, North West, Gauteng, Mpumalanga, Free State, KwaZulu-Natal, Northern Cape, Eastern Cape, and the Western Cape."}
                         </p>
@@ -108,7 +108,7 @@ const Sales = () => {
                         transition={{ delay: 0.4 }}
                     >
                         <ShieldCheck size={48} className="feature-icon" />
-                        <h3 style={{ fontSize: '1.3rem' }} data-editable="pages.sales.feature3Title">{data.feature3Title || "Compliant Transit"}</h3>
+                        <h3 data-editable="pages.sales.feature3Title">{data.feature3Title || "Compliant Transit"}</h3>
                         <p className="text-muted" data-editable="pages.sales.feature3Desc">
                             {data.feature3Desc || "All necessary waybills, certifications, and compliance documents are meticulously handled by our team for a seamless and legal transit."}
                         </p>

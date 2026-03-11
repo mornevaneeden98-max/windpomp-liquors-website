@@ -34,6 +34,7 @@ const Admin = () => {
     const previewContainerRef = useRef(null);
     const iframeRef = useRef(null);
     const [zoom, setZoom] = useState(1);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (u) => {
@@ -113,11 +114,18 @@ const Admin = () => {
     useEffect(() => {
         const el = previewContainerRef.current;
         if (!el) return;
-        const calc = () => setZoom(el.offsetWidth / 1440);
+        const calc = () => {
+            const base = window.innerWidth < 768 ? 375 : 1440;
+            setZoom(el.offsetWidth / base);
+        };
         calc();
         const ro = new ResizeObserver(calc);
         ro.observe(el);
-        return () => ro.disconnect();
+        window.addEventListener('resize', calc);
+        return () => {
+            ro.disconnect();
+            window.removeEventListener('resize', calc);
+        };
     }, [user]);
 
     const handleLogin = async (e) => {
@@ -244,12 +252,48 @@ const Admin = () => {
         );
     }
 
+
     // ---------- Main Editor ----------
     return (
-        <div style={{ display: 'flex', height: '100vh', background: '#050505', color: '#fff', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', height: '100dvh', width: '100vw', background: '#050505', color: '#fff', overflow: 'hidden', position: 'fixed', top: 0, left: 0 }}>
+
+            {/* Mobile Sidebar Toggle */}
+            <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                style={{
+                    position: 'absolute',
+                    bottom: '20px',
+                    right: '20px',
+                    zIndex: 2000,
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    background: 'var(--primary)',
+                    border: 'none',
+                    display: window.innerWidth < 768 ? 'flex' : 'none',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                    cursor: 'pointer'
+                }}
+            >
+                {sidebarOpen ? <Layout size={24} color="#000" /> : <Shield size={24} color="#000" />}
+            </button>
 
             {/* Sidebar */}
-            <div style={{ width: '260px', flexShrink: 0, borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', background: '#0a0a0a' }}>
+            <div style={{
+                width: window.innerWidth < 768 ? '220px' : '260px',
+                position: window.innerWidth < 768 ? 'absolute' : 'relative',
+                left: window.innerWidth < 768 ? (sidebarOpen ? '0' : '-220px') : '0',
+                transition: 'left 0.3s ease',
+                zIndex: 1500,
+                height: '100%',
+                flexShrink: 0,
+                borderRight: '1px solid rgba(255,255,255,0.06)',
+                display: 'flex',
+                flexDirection: 'column',
+                background: '#0a0a0a'
+            }}>
                 <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                         <Shield size={16} color="var(--primary)" />
@@ -269,7 +313,10 @@ const Admin = () => {
                         ].map(tab => (
                             <button
                                 key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
+                                onClick={() => {
+                                    setActiveTab(tab.id);
+                                    if (window.innerWidth < 768) setSidebarOpen(false);
+                                }}
                                 style={{
                                     width: '100%',
                                     display: 'flex',
@@ -285,7 +332,7 @@ const Admin = () => {
                                     transition: 'all 0.2s',
                                     marginBottom: '0.3rem',
                                     fontWeight: activeTab === tab.id ? '700' : '500',
-                                    fontSize: '0.85rem',
+                                    fontSize: window.innerWidth < 768 ? '0.75rem' : '0.85rem',
                                     borderLeft: activeTab === tab.id ? '3px solid var(--primary)' : '3px solid transparent',
                                 }}
                             >
@@ -293,26 +340,26 @@ const Admin = () => {
                             </button>
                         ))}
                     </div>
-
-                    <div style={{ marginTop: '2.5rem' }}>
-                    </div>
                 </div>
 
-                <div style={{ padding: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                    <button
-                        onClick={handleExit}
-                        className="btn btn-primary"
-                        style={{ width: '100%', marginBottom: '0.8rem', height: '48px', fontSize: '0.85rem', letterSpacing: '1px' }}
-                    >
-                        VIEW LIVE SITE
-                    </button>
-                    {success && <p style={{ color: '#4caf50', fontSize: '0.75rem', textAlign: 'center', marginBottom: '0.8rem', fontWeight: 'bold' }}>{success}</p>}
-                    <button
-                        onClick={handleLogout}
-                        style={{ width: '100%', background: 'transparent', border: 'none', color: '#ff4444', fontSize: '0.75rem', cursor: 'pointer', opacity: 0.6, fontWeight: 'bold' }}
-                    >
-                        LOGOUT SESSION
-                    </button>
+                <div style={{ padding: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <button
+                            onClick={handleExit}
+                            className="btn btn-primary"
+                            style={{ flex: 1, padding: '0.4rem', height: '40px', fontSize: '0.7rem', letterSpacing: '1px' }}
+                        >
+                            LIVE SITE
+                        </button>
+                        <button
+                            onClick={handleLogout}
+                            className="btn btn-outline"
+                            style={{ flex: 1, padding: '0.4rem', height: '40px', fontSize: '0.7rem', border: '1px solid #ff4444', color: '#ff4444' }}
+                        >
+                            LOGOUT
+                        </button>
+                    </div>
+                    {success && <p style={{ color: '#4caf50', fontSize: '0.65rem', textAlign: 'center', fontWeight: 'bold' }}>{success}</p>}
                 </div>
             </div>
 
@@ -324,10 +371,10 @@ const Admin = () => {
                 <iframe
                     key={activeTab}
                     ref={iframeRef}
-                    src={PAGE_URLS[activeTab]}
+                    src={`${PAGE_URLS[activeTab]}?edit=true`}
                     title="Site Preview"
                     style={{
-                        width: '1440px',
+                        width: window.innerWidth < 768 ? '375px' : '1440px',
                         height: `${100 / zoom}%`,
                         border: 'none',
                         transformOrigin: 'top left',

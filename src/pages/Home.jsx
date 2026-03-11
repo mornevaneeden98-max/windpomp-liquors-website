@@ -30,17 +30,19 @@ const Home = () => {
                 <div className="container">
                     <motion.div
                         className="hero-content glass-panel"
-                        style={{ padding: '4rem', maxWidth: '650px', borderLeft: '4px solid var(--primary)' }}
+                        style={{ borderLeft: '4px solid var(--primary)' }}
                         initial={{ opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="hero-subtitle" data-editable="pages.home.heroSubtitle">{data.heroSubtitle}</span>
-                        <h1 className="heading-xl" data-editable="pages.home.heroTitle" style={{ whiteSpace: 'pre-line' }}>{data.heroTitle}</h1>
-                        <p className="text-muted" data-editable="pages.home.heroDesc" style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
-                            {data.heroDesc}
+                        <span className="hero-subtitle" data-editable="pages.home.heroSubtitle">{data.heroSubtitle || "Premium Spirits Hub"}</span>
+                        <h1 className="heading-xl" data-editable="pages.home.heroTitle" style={{ whiteSpace: 'pre-line', color: '#ffffff', display: 'block' }}>
+                            {data.heroTitle && data.heroTitle.trim() !== "" ? data.heroTitle : "Crafted by Kaia Distillery. \nDistributed Nationwide."}
+                        </h1>
+                        <p className="text-muted" data-editable="pages.home.heroDesc" style={{ fontSize: '1rem', marginBottom: '2rem' }}>
+                            {data.heroDesc && data.heroDesc.trim() !== "" ? data.heroDesc : "Welcome to the official Windpomp Liquors portal. We are the authorized national distributor for Kaia Distillery's premium gin, brannas, rum, and more."}
                         </p>
-                        <div style={{ display: 'flex', gap: '1.5rem' }}>
+                        <div className="btn-group">
                             <Link to="/shop" className="btn btn-primary">Discover Spirits</Link>
                             <Link to="/sales" className="btn btn-outline">Corporate & Pallets</Link>
                         </div>

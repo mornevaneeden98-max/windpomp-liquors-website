@@ -16,9 +16,11 @@ function AppContent() {
 
   // --- Visual Engine Bridge ---
   useEffect(() => {
-    // If we're inside the Admin IFrame, add interaction interceptor and live preview sync
     const isIframe = window.self !== window.top;
-    if (isIframe) {
+    const isEditMode = new URLSearchParams(window.location.search).get('edit') === 'true';
+
+    // Only activate bridge if in iframe AND edit mode is explicitly requested
+    if (isIframe && isEditMode) {
       // Inject focus styles for inline editing
       const style = document.createElement('style');
       style.innerHTML = `

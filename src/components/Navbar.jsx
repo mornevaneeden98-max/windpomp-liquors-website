@@ -31,9 +31,21 @@ const Navbar = () => {
 
     return (
         <header className={`nav-header ${scrolled ? 'scrolled' : ''}`}>
+            <div className="top-bar">
+                <div className="container top-bar-container">
+                    <span data-editable="global.welcome">{g.welcome || 'Wholesale & Distribution'}</span>
+                    <div className="top-bar-info">
+                        <span data-editable="global.phone">{g.phone}</span>
+                        <span data-editable="global.email">sales@example.com</span>
+                    </div>
+                </div>
+            </div>
             <div className="container nav-container">
-                <Link to="/" className="nav-logo">
-                    <h1 data-editable="global.company">{g.company || 'Windpomp'} <span className="text-gold">Liquors</span></h1>
+                <Link to="/" className="nav-logo" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="nav-logo-wrap" data-editable="global.company">
+                        <span className="logo-text-top">WIND<span className="text-gold">POMP</span></span>
+                        <span className="logo-text-bottom text-gold">LIQUORS</span>
+                    </div>
                 </Link>
 
                 <nav className="nav-links">
@@ -70,11 +82,56 @@ const Navbar = () => {
                     </Link>
                 </nav>
 
-                {/* Mobile menu button could go here */}
-                <button className="mobile-toggle" style={{ display: 'none' }} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                    {mobileMenuOpen ? <X /> : <Menu />}
-                </button>
+                <div className="mobile-actions">
+                    <Link to="/inquiry" className="mobile-cart-btn" aria-label="Cart">
+                        <ShoppingCart size={20} />
+                        {totalItems > 0 && (
+                            <span className="cart-badge">{totalItems}</span>
+                        )}
+                    </Link>
+                    <button className="mobile-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
             </div>
+
+            {/* Mobile Menu */}
+            {mobileMenuOpen && (
+                <>
+                    <motion.div
+                        className="mobile-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        onClick={() => setMobileMenuOpen(false)}
+                    />
+                    <motion.div
+                        className="mobile-menu"
+                        initial={{ x: '100%' }}
+                        animate={{ x: 0 }}
+                        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                    >
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.key}
+                                to={link.path}
+                                className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
+                                onClick={() => setMobileMenuOpen(false)}
+                                data-editable={link.key}
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
+                        <Link
+                            to="/inquiry"
+                            className="btn btn-primary"
+                            style={{ marginTop: '1rem' }}
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            <span data-editable="global.navInquiry">{g.navInquiry || 'Wholesale Inquiry'}</span>
+                        </Link>
+                    </motion.div>
+                </>
+            )}
         </header>
     );
 };
