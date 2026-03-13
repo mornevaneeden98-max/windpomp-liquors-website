@@ -26,9 +26,18 @@ const Inquiry = () => {
 
         const form = e.target;
         const formData = new FormData(form);
+        const email = formData.get('email');
+        const phone = formData.get('phone');
+
+        if (!email && !phone) {
+            alert("Please provide either an Email Address or a Phone/WhatsApp number so we can get back to you.");
+            setIsSubmitting(false);
+            return;
+        }
 
         try {
-            const response = await fetch("https://formsubmit.co/ajax/sales@example.com", {
+            const recipientEmail = content?.global?.email || "sales@windpompliquors.co.za";
+            const response = await fetch(`https://formsubmit.co/ajax/${recipientEmail}`, {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json'
@@ -105,8 +114,8 @@ const Inquiry = () => {
                             {data.desc || "Whether you need 10 boxes for an event or a full shipping container for nationwide distribution, Windpomp Liquors is fully equipped to handle your wholesale liquor needs."}
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                            <a href={`mailto:${content?.global?.email || 'sales@example.com'}`} style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 500 }} data-editable="global.email">
-                                {content?.global?.email || "sales@example.com"}
+                            <a href={`mailto:${content?.global?.email || 'sales@windpompliquors.co.za'}`} style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 500 }} data-editable="global.email">
+                                {content?.global?.email || "sales@windpompliquors.co.za"}
                             </a>
                             <a
                                 href={`https://wa.me/${(content?.global?.phone || "079 490 1492").replace(/\s/g, "")}`}
@@ -141,7 +150,7 @@ const Inquiry = () => {
 
                     <form onSubmit={handleSubmit}>
                         {/* FormSubmit Configuration */}
-                        <input type="hidden" name="_subject" value="New Wholesale Inquiry! (Windpomp Liquors)" />
+                        <input type="hidden" name="_subject" value={`New Wholesale Inquiry! (Windpomp Liquors)`} />
                         <input type="text" name="_honey" style={{ display: 'none' }} />
                         <input type="hidden" name="Cart Items" value={cartSummaryText} />
 
@@ -159,11 +168,11 @@ const Inquiry = () => {
                         <div className="grid-cols-2 grid-gap-lg">
                             <div className="form-group">
                                 <label className="form-label">Email Address</label>
-                                <input type="email" name="email" className="form-input" placeholder="john@company.com" required />
+                                <input type="email" name="email" className="form-input" placeholder="your@email.com" />
                             </div>
                             <div className="form-group">
                                 <label className="form-label">Phone / WhatsApp</label>
-                                <input type="tel" name="phone" className="form-input" placeholder="+27 ..." required />
+                                <input type="tel" name="phone" className="form-input" placeholder="+27 ..." />
                             </div>
                         </div>
 

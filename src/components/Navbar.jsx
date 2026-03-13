@@ -35,8 +35,8 @@ const Navbar = () => {
                 <div className="container top-bar-container">
                     <span data-editable="global.welcome">{g.welcome || 'Wholesale & Distribution'}</span>
                     <div className="top-bar-info">
-                        <span data-editable="global.phone">{g.phone}</span>
-                        <span data-editable="global.email">sales@example.com</span>
+                        <span data-editable="global.phone">{g.phone || "+27 79 490 1492"}</span>
+                        <span data-editable="global.email">{g.email || "sales@windpompliquors.co.za"}</span>
                     </div>
                 </div>
             </div>

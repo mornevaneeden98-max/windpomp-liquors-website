@@ -36,13 +36,13 @@ const Footer = () => {
                             <p data-editable="global.address">{content?.global?.address || "N1, Musina, Limpopo, 0900"}</p>
                             <p>
                                 <a
-                                    href="mailto:sales@example.com"
+                                    href={`mailto:${content?.global?.email || "sales@windpompliquors.co.za"}`}
                                     data-editable="global.email"
                                     style={{ color: 'inherit', textDecoration: 'none' }}
                                     onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
                                     onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
                                 >
-                                    sales@example.com
+                                    {content?.global?.email || "sales@windpompliquors.co.za"}
                                 </a>
                             </p>
                             <p data-editable="global.phone" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
